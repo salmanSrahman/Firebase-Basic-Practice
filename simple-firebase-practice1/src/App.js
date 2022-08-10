@@ -1,5 +1,6 @@
 import "./App.css";
 import app from "./firebase.init";
+import "bootstrap/dist/css/bootstrap.min.css";
 import {
   getAuth,
   signInWithPopup,
@@ -8,6 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { useState } from "react";
+import PasswordAuth from "./Components/PasswordAuth/PasswordAuth";
 
 const auth = getAuth(app);
 
@@ -18,7 +20,8 @@ function App() {
   const handleGoggleSignIn = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
-        const user = result.user;        setUser(user);
+        const user = result.user;
+        setUser(user);
       })
       .catch((error) => {
         console.log("error", error);
@@ -61,6 +64,7 @@ function App() {
       <h2>{user.displayName}</h2>
       <h4>{user.email}</h4>
       <img src={user?.photoURL} alt="" />
+      <PasswordAuth />
     </div>
   );
 }
