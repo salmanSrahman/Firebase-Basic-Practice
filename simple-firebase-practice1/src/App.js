@@ -1,6 +1,8 @@
 import "./App.css";
 import app from "./firebase.init";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from "react-bootstrap";
+
 import {
   getAuth,
   signInWithPopup,
@@ -51,20 +53,22 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Auth</h1>
-      {user?.uid ? (
-        <button onClick={handleGoggleSignOut}>Google Sign Out</button>
-      ) : (
-        <div>
-          <button onClick={handleGoggleSignIn}>Google Sign In</button>
-          <button onClick={handleGithubSignIn}>Github Sign In</button>
-        </div>
-      )}
-      <h2>{user.displayName}</h2>
-      <h4>{user.email}</h4>
-      <img src={user?.photoURL} alt="" />
-      <PasswordAuth />
+    <div>
+      <Container>
+        <h1>Auth</h1>
+        {user?.uid ? (
+          <button onClick={handleGoggleSignOut}>Google Sign Out</button>
+        ) : (
+          <div>
+            <button onClick={handleGoggleSignIn}>Google Sign In</button>
+            <button onClick={handleGithubSignIn}>Github Sign In</button>
+          </div>
+        )}
+        <h2>{user.displayName}</h2>
+        <h4>{user.email}</h4>
+        <img src={user?.photoURL} alt="" />
+        <PasswordAuth />
+      </Container>
     </div>
   );
 }
