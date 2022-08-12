@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import app from "../../firebase.init";
 
 const auth = getAuth(app);
@@ -19,7 +19,7 @@ const PasswordAuth = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
         console.log(user);
