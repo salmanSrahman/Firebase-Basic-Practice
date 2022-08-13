@@ -7,6 +7,7 @@ import app from "../../firebase.init";
 const auth = getAuth(app);
 
 const PasswordAuth = () => {
+  const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,6 +20,15 @@ const PasswordAuth = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    setValidated(true);
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
@@ -33,17 +43,21 @@ const PasswordAuth = () => {
     <div>
       <Container>
         <h3>Please Register</h3>
-        <Form onSubmit={handleFormSubmit}>
+        <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
+              required
               onBlur={handleEmail}
             />
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
             </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid email.
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -51,11 +65,12 @@ const PasswordAuth = () => {
             <Form.Control
               type="password"
               placeholder="Password"
+              required
               onBlur={handlePassword}
             />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid password.
+            </Form.Control.Feedback>
           </Form.Group>
           <Button variant="primary" type="submit">
             Submit
