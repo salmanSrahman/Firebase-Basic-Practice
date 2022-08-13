@@ -8,6 +8,7 @@ const auth = getAuth(app);
 
 const PasswordAuth = () => {
   const [validated, setValidated] = useState(false);
+  const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,8 +24,11 @@ const PasswordAuth = () => {
 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
+      return;
+    }
+    if (!/(?=.*?[A-Z])/.test(password)) {
+      setError("Password should contain at least one uppercase letter");
     }
 
     setValidated(true);
@@ -59,7 +63,6 @@ const PasswordAuth = () => {
               Please provide a valid email.
             </Form.Control.Feedback>
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
@@ -72,6 +75,7 @@ const PasswordAuth = () => {
               Please provide a valid password.
             </Form.Control.Feedback>
           </Form.Group>
+          <h6 className="text-danger">{error}</h6>
           <Button variant="primary" type="submit">
             Submit
           </Button>
