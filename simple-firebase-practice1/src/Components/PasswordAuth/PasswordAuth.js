@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { Container, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import app from "../../firebase.init";
 
 const auth = getAuth(app);
 
 const PasswordAuth = () => {
+  const [registered, setRegistered] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -37,22 +42,38 @@ const PasswordAuth = () => {
     }
 
     setValidated(true);
-    setError("")
+    setError("");
+    if (registered) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          const user = result.user;
+          console.log(user);
+        })
+        .then((error) => {
+          console.error(error);
+          setError(error.message);
+        });
+    } else {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          const user = result.user;
+          console.log(user);
+        })
+        .then((error) => {
+          console.error(error);
+          setError(error.message);
+        });
+    }
+  };
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        const user = result.user;
-        console.log(user);
-      })
-      .then((error) => {
-        console.error("error", error);
-      });
+  const handleRegistration = (event) => {
+    setRegistered(event.target.checked);
   };
 
   return (
     <div>
       <Container>
-        <h3>Please Register</h3>
+        <h3>Please {registered ? "Login" : "Register"}</h3>
         <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -81,9 +102,16 @@ const PasswordAuth = () => {
               Please provide a valid password.
             </Form.Control.Feedback>
           </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check
+              type="checkbox"
+              label="Check me out"
+              onChange={handleRegistration}
+            />
+          </Form.Group>
           <h6 className="text-danger">{error}</h6>
           <Button variant="primary" type="submit">
-            Submit
+            {registered ? "Login" : "Register"}
           </Button>
         </Form>
       </Container>
