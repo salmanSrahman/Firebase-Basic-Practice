@@ -5,6 +5,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification,
 } from "firebase/auth";
 import app from "../../firebase.init";
 
@@ -44,22 +45,25 @@ const PasswordAuth = () => {
     setValidated(true);
     setError("");
     if (registered) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((result) => {
-          const user = result.user;
-          console.log(user);
-        })
-        .then((error) => {
-          console.error(error);
-          setError(error.message);
-        });
-    } else {
       signInWithEmailAndPassword(auth, email, password)
         .then((result) => {
           const user = result.user;
           console.log(user);
         })
-        .then((error) => {
+        .catch((error) => {
+          console.error(error);
+          setError(error.message);
+        });
+    } else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((result) => {
+          const user = result.user;
+          sendEmailVerification(auth.currentUser).then(() => {
+            console.log("Email Sent");
+          });
+          console.log(user);
+        })
+        .catch((error) => {
           console.error(error);
           setError(error.message);
         });
