@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
   sendPasswordResetEmail,
+  updateProfile,
 } from "firebase/auth";
 import app from "../../firebase.init";
 
@@ -15,9 +16,14 @@ const auth = getAuth(app);
 const PasswordAuth = () => {
   const [registered, setRegistered] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const handleName = (event) => {
+    setName(event.target.value);
+  };
 
   const handleEmail = (event) => {
     setEmail(event.target.value);
@@ -59,10 +65,9 @@ const PasswordAuth = () => {
       createUserWithEmailAndPassword(auth, email, password)
         .then((result) => {
           const user = result.user;
-          sendEmailVerification(auth.currentUser).then(() => {
-            console.log("Email Sent");
-          });
           console.log(user);
+          handleEmailVerification();
+          setUserName();
         })
         .catch((error) => {
           console.error(error);
@@ -79,12 +84,38 @@ const PasswordAuth = () => {
       console.log("Password Reset Mail Sent");
     });
   };
+  const handleEmailVerification = () => {
+    sendEmailVerification(auth.currentUser).then(() => {
+      console.log("Email Sent");
+    });
+  };
+
+  const setUserName = () => {
+    updateProfile(auth.currentUser, {
+      displayName: name,
+    }).then(() => {
+      console.log("Profile Updated");
+    });
+  };
 
   return (
     <div>
       <Container>
         <h3>Please {registered ? "Login" : "Register"}</h3>
+
         <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
+          {!registered && (
+            <Form.Group className="mb-3" controlId="formBasicName">
+              <Form.Label>Full Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter full name"
+                required
+                onBlur={handleName}
+              />
+            </Form.Group>
+          )}
+
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
