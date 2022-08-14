@@ -29,9 +29,15 @@ const PasswordAuth = () => {
     }
     if (!/(?=.*?[A-Z])/.test(password)) {
       setError("Password should contain at least one uppercase letter");
+      return;
+    }
+    if (!/(?=.*?[a-z])/.test(password)) {
+      setError("Password should contain at least one lowercase letter");
+      return;
     }
 
     setValidated(true);
+    setError("")
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
