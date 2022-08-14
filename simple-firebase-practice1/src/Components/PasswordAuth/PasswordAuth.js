@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import app from "../../firebase.init";
 
@@ -73,6 +74,11 @@ const PasswordAuth = () => {
   const handleRegistration = (event) => {
     setRegistered(event.target.checked);
   };
+  const handlePasswordReset = (event) => {
+    sendPasswordResetEmail(auth, email).then(() => {
+      console.log("Password Reset Mail Sent");
+    });
+  };
 
   return (
     <div>
@@ -116,6 +122,9 @@ const PasswordAuth = () => {
           <h6 className="text-danger">{error}</h6>
           <Button variant="primary" type="submit">
             {registered ? "Login" : "Register"}
+          </Button>
+          <Button variant="link" onClick={handlePasswordReset}>
+            Reset Password
           </Button>
         </Form>
       </Container>
