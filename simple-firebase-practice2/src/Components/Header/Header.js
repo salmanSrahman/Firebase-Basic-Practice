@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Navbar, Form, Nav, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
@@ -11,16 +12,15 @@ const Header = () => {
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
-              className="me-auto my-2 my-lg-0"
+              className="m-auto my-2 my-lg-0 nav__container"
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Nav.Link href="#action1">Home</Nav.Link>
-              <Nav.Link href="#action2">Link</Nav.Link>
-
-              <Nav.Link href="#" disabled>
-                Link
-              </Nav.Link>
+              <Link to="/home">Home</Link>
+              <Link to="/products">Products</Link>
+              <Link to="/order">Order</Link>
+              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>
             </Nav>
             <Form className="d-flex">
               <Form.Control
