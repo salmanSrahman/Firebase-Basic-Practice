@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className="mt-5 pt-5 text-center">
       <h1>This is home.</h1>
-      <h2>{user.displayName}</h2>
+      <h2>{user?.displayName}</h2>
     </div>
   );
 };

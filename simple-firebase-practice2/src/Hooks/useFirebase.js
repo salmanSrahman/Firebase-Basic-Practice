@@ -26,15 +26,23 @@ const useFirebase = () => {
         console.error("error", error.message);
       });
   };
-  // google sign in
+  //handle google sign in
+
+  const handleSignOut = () => {
+    signOut(auth).then(() => {
+      setUser({});
+    });
+  };
+  // handle sign out
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
   }, []);
+  // get current user
 
-  return { user, handleGoogleSignIn };
+  return { user, handleGoogleSignIn, handleSignOut };
 };
 
 export default useFirebase;
