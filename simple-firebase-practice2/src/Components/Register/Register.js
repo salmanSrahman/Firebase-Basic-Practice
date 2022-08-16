@@ -3,33 +3,46 @@ import { Button, Container, Form } from "react-bootstrap";
 import useFirebase from "../../Hooks/useFirebase";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import app from "../../Firebase.init/firebase.init";
+
+const auth = getAuth(app);
 
 const Register = () => {
   const { handleGoogleSignIn } = useFirebase();
+  const [user, setUser] = useState({});
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [register, setRegister] = useState("");
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-  };
-
-  const handleName = (event) => {
-    console.log(event.target.value);
-  };
-  const handleEmail = (event) => {
-    console.log(event.target.value);
-  };
-  const handlePassword = (event) => {
-    console.log(event.target.value);
-  };
 
   const navigate = useNavigate();
 
   const handleRegister = (event) => {
     navigate("/login");
   };
+
+  const handleName = (event) => {
+    setName(event.target.value);
+  };
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        const user = result.user;
+        setUser(user);
+      })
+      .catch((error) => {
+        console.error("error", error.message);
+      });
+  };
+  // create user using email, password
 
   return (
     <div className="">
