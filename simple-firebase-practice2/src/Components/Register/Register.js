@@ -3,7 +3,11 @@ import { Button, Container, Form } from "react-bootstrap";
 import useFirebase from "../../Hooks/useFirebase";
 import "./Register.css";
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import app from "../../Firebase.init/firebase.init";
 
 const auth = getAuth(app);
@@ -37,12 +41,20 @@ const Register = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
+        handleUpdateUser();
+        console.log(user);
       })
       .catch((error) => {
         console.error("error", error.message);
       });
   };
   // create user using email, password
+
+  const handleUpdateUser = () => {
+    updateProfile(auth.currentUser, {
+      displayName: name,
+    });
+  };
 
   return (
     <div className="">
