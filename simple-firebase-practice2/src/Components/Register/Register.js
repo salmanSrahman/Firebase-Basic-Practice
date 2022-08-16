@@ -7,6 +7,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 import app from "../../Firebase.init/firebase.init";
 
@@ -55,11 +56,19 @@ const Register = () => {
       displayName: name,
     });
   };
+  // handle update user
+
+  const handleSignOut = () => {
+    signOut(auth).then(() => {
+      setUser({});
+    });
+  };
 
   return (
     <div className="">
       <Container>
         <h1>Here is register.</h1>
+        {user?.email}
         <div className="my-5 text-center">
           <Button onClick={handleGoogleSignIn}>Google Sign In</Button>
         </div>
@@ -95,6 +104,15 @@ const Register = () => {
             <Button variant="primary" type="submit">
               Register
             </Button>
+            <Button
+              variant="danger"
+              type="submit"
+              onClick={handleSignOut}
+              className="ms-2"
+            >
+              Sign Out
+            </Button>
+
             <Button variant="link" onClick={handleRegister} className="d-block">
               Already Registered?
             </Button>
