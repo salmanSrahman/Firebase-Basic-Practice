@@ -4,7 +4,9 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendEmailVerification,
   signOut,
+  handleEmailVerification,
 } from "firebase/auth";
 import app from "../Firebase.init/firebase.init";
 
@@ -20,13 +22,17 @@ const useFirebase = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
-        console.log(user);
+        handleEmailVerification();
       })
       .catch((error) => {
         console.error("error", error.message);
       });
   };
   //handle google sign in
+
+  const handleEmailVerification = () => {
+    sendEmailVerification(auth.currentUser);
+  };
 
   const handleSignOut = () => {
     signOut(auth).then(() => {
