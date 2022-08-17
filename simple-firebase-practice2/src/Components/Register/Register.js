@@ -63,6 +63,7 @@ const Register = () => {
       setUser({});
     });
   };
+  // handle sign out
 
   return (
     <div className="">
