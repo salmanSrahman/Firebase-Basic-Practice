@@ -9,7 +9,7 @@ const Header = () => {
       <Navbar bg="dark" expand="lg">
         <Container>
           <Navbar.Brand href="#" className="text-white">
-            Navbar scroll
+            Protected Route
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
