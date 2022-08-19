@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Register.css";
+import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
   return (
@@ -32,7 +33,10 @@ const Register = () => {
               <div className="text-secondary fw-bold">OR</div>
               <div className="line"></div>
             </div>
-            <button className="google__btn">Continue With Google</button>
+            <button className="google__btn">
+              <FcGoogle className="fs-3" />
+              <span> Continue With Google</span>
+            </button>
           </form>
         </div>
       </Container>
