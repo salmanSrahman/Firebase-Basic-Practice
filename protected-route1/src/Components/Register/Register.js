@@ -1,10 +1,21 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 import { FcGoogle } from "react-icons/fc";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
 
 const Register = () => {
+  const [signInWithGoogle] = useSignInWithGoogle(auth);
+  const navigate = useNavigate();
+
+  const handleGoogleSignIn = () => {
+    signInWithGoogle().then(() => {
+      navigate("/home");
+    });
+  };
+
   return (
     <div>
       <Container>
@@ -33,11 +44,11 @@ const Register = () => {
               <div className="text-secondary fw-bold">OR</div>
               <div className="line"></div>
             </div>
-            <button className="google__btn">
-              <FcGoogle className="fs-3" />
-              <span> Continue With Google</span>
-            </button>
           </form>
+          <button className="google__btn" onClick={handleGoogleSignIn}>
+            <FcGoogle className="fs-3" />
+            <span> Continue With Google</span>
+          </button>
         </div>
       </Container>
     </div>

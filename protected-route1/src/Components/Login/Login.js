@@ -5,6 +5,14 @@ import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
+const [signInWithGoogle] = useSignInWithGoogle(auth);
+  const navigate = useNavigate();
+
+  const handleGoogleSignIn = () => {
+    signInWithGoogle().then(() => {
+      navigate("/home");
+    });
+  };
   return (
     <div>
       <Container>
