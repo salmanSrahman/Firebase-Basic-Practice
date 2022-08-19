@@ -1,16 +1,20 @@
 import React from "react";
 import "./Login.css";
 import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
 
 const Login = () => {
-const [signInWithGoogle] = useSignInWithGoogle(auth);
-  const navigate = useNavigate();
+  const [signInWithGoogle] = useSignInWithGoogle(auth);
+  let navigate = useNavigate();
+  let location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleGoogleSignIn = () => {
     signInWithGoogle().then(() => {
-      navigate("/home");
+      navigate(from, { replace: true });
     });
   };
   return (
@@ -37,11 +41,11 @@ const [signInWithGoogle] = useSignInWithGoogle(auth);
               <div className="text-secondary fw-bold">OR</div>
               <div className="line"></div>
             </div>
-            <button className="google__btn">
-              <FcGoogle className="fs-3" />
-              <span> Continue With Google</span>
-            </button>
           </form>
+          <button className="google__btn" onClick={handleGoogleSignIn}>
+            <FcGoogle className="fs-3" />
+            <span> Continue With Google</span>
+          </button>
         </div>
       </Container>
     </div>
