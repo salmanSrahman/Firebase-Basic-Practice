@@ -1,35 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { Container } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import {
+  useSignInWithGoogle,
+  useSignInWithEmailAndPassword,
+  useAuthState,
+} from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 
 const Login = () => {
+  const [user] = useAuthState(auth);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [signInWithGoogle] = useSignInWithGoogle(auth);
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   let navigate = useNavigate();
   let location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
   const handleGoogleSignIn = () => {
-    signInWithGoogle().then(() => {
-      navigate(from, { replace: true });
-    });
+    signInWithGoogle();
   };
+  // handle google login
+
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+  };
+  if (user) {
+    navigate(from, { replace: true });
+  }
+  const handleLogIn = (event) => {
+    event.preventDefault();
+    signInWithEmailAndPassword(email, password);
+  };
+
   return (
     <div>
       <Container>
         <div className="login__part">
           <h1 className="form__title text-center">Login</h1>
-          <form action="">
+          <form action="" onSubmit={handleLogIn}>
             <div className="form__group mb-2">
               <label htmlFor="email">Email</label>
-              <input type="email" name="email" id="" />
+              <input type="email" name="email" id="" onBlur={handleEmail} />
             </div>
             <div className="form__group mb-2">
               <label htmlFor="email">Password</label>
-              <input type="password" name="password" id="" />
+              <input
+                type="password"
+                name="password"
+                id=""
+                onBlur={handlePassword}
+              />
             </div>
             <button className="signup__btn">Login</button>
             <div className="text-center transfer__login pt-1">

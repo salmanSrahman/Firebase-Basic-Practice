@@ -2,8 +2,11 @@ import React from "react";
 import { Navbar, Container, Nav, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Header.css";
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "../../firebase.init";
 
 const Header = () => {
+  const [user] = useAuthState(auth);
   return (
     <div>
       <Navbar bg="dark" expand="lg">
@@ -21,8 +24,11 @@ const Header = () => {
               <Link to="/home">Home</Link>
               <Link to="/products">Products</Link>
               <Link to="/order">Order</Link>
-              <Link to="/register">Register</Link>
-              <Link to="/login">Login</Link>
+              {user ? (
+                <Button>Sign Out</Button>
+              ) : (
+                <Link to="/login">Login</Link>
+              )}
             </Nav>
             <Form className="d-flex">
               <Form.Control

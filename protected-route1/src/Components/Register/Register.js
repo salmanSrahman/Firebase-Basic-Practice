@@ -6,28 +6,35 @@ import { FcGoogle } from "react-icons/fc";
 import {
   useSignInWithGoogle,
   useCreateUserWithEmailAndPassword,
+  useAuthState,
 } from "react-firebase-hooks/auth";
 
 import auth from "../../firebase.init";
 
 const Register = () => {
+  const [user] = useAuthState(auth);
   const [signInWithGoogle] = useSignInWithGoogle(auth);
   const [createUserWithEmailAndPassword] =
     useCreateUserWithEmailAndPassword(auth);
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const navigate = useNavigate();
+  if (user) {
+    navigate("/home");
+  }
 
   const handleGoogleSignIn = () => {
-    signInWithGoogle().then(() => {
-      navigate("/home");
-    });
+    signInWithGoogle();
   };
   // handle google sign up
 
+  const handleName = (event) => {
+    setName(event.target.value);
+  };
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
@@ -44,9 +51,7 @@ const Register = () => {
       alert("Password does not match");
       return;
     }
-    createUserWithEmailAndPassword(email, password).then((user) => {
-      navigate("/home");
-    });
+    createUserWithEmailAndPassword(email, password);
   };
   // handle create user with email & password
 
@@ -56,6 +61,10 @@ const Register = () => {
         <div className="form__part">
           <h1 className="form__title text-center">Sign Up</h1>
           <form action="" onSubmit={handleRegisterForm}>
+            <div className="form__group mb-2">
+              <label htmlFor="name">Name</label>
+              <input type="text" name="Your name" id="" onBlur={handleName} />
+            </div>
             <div className="form__group mb-2">
               <label htmlFor="email">Email</label>
               <input type="email" name="email" id="" onBlur={handleEmail} />
