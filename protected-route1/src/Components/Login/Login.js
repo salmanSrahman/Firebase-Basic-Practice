@@ -36,16 +36,20 @@ const Login = () => {
   if (user) {
     navigate(from, { replace: true });
   }
+  // user existence condition
+
   const handleLogIn = (event) => {
     event.preventDefault();
     signInWithEmailAndPassword(email, password);
   };
+  // handle log in by using email, password
 
   const handleResetPassword = async () => {
     await sendPasswordResetEmail(email).then(() => {
       alert("Password reset");
     });
   };
+  // handle reset password
 
   return (
     <div>
