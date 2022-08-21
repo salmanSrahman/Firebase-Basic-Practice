@@ -7,6 +7,7 @@ import {
   useSignInWithGoogle,
   useCreateUserWithEmailAndPassword,
   useAuthState,
+  useUpdateProfile,
 } from "react-firebase-hooks/auth";
 
 import auth from "../../firebase.init";
@@ -16,6 +17,7 @@ const Register = () => {
   const [signInWithGoogle] = useSignInWithGoogle(auth);
   const [createUserWithEmailAndPassword] =
     useCreateUserWithEmailAndPassword(auth);
+  const [updateProfile] = useUpdateProfile(auth);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -32,7 +34,7 @@ const Register = () => {
   };
   // handle google sign up
 
-  const handleName = (event) => {
+  const handleDisplayName = (event) => {
     setName(event.target.value);
   };
   const handleEmail = (event) => {
@@ -51,9 +53,17 @@ const Register = () => {
       alert("Password does not match");
       return;
     }
-    createUserWithEmailAndPassword(email, password);
+    createUserWithEmailAndPassword(email, password).then((user) => {
+      updateUser();
+    });
+
+    console.log(user);
   };
   // handle create user with email & password
+
+  const updateUser = async () => {
+    await updateProfile({ displayName: name });
+  };
 
   return (
     <div>
@@ -63,14 +73,19 @@ const Register = () => {
           <form action="" onSubmit={handleRegisterForm}>
             <div className="form__group mb-2">
               <label htmlFor="name">Name</label>
-              <input type="text" name="Your name" id="" onBlur={handleName} />
+              <input
+                type="text"
+                name="Your name"
+                id=""
+                onBlur={handleDisplayName}
+              />
             </div>
             <div className="form__group mb-2">
               <label htmlFor="email">Email</label>
               <input type="email" name="email" id="" onBlur={handleEmail} />
             </div>
             <div className="form__group mb-2">
-              <label htmlFor="email">Password</label>
+              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 name="password"
@@ -79,7 +94,7 @@ const Register = () => {
               />
             </div>
             <div className="form__group mb-2">
-              <label htmlFor="email">Confirm Password</label>
+              <label htmlFor="confirmPassword">Confirm Password</label>
               <input
                 type="password"
                 name="password"

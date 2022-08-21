@@ -8,6 +8,7 @@ import auth from "../../firebase.init";
 
 const Header = () => {
   const [user] = useAuthState(auth);
+  console.log(user);
 
   const logOut = () => {
     signOut(auth);
@@ -30,7 +31,12 @@ const Header = () => {
               <Link to="/products">Products</Link>
               <Link to="/order">Order</Link>
               {user ? (
-                <Button onClick={logOut}>Sign Out</Button>
+                <div>
+                  <span className="text-danger fw-bold mx-3">
+                    {user?.displayName}
+                  </span>
+                  <Button onClick={logOut}>Sign Out</Button>
+                </div>
               ) : (
                 <Link to="/login">Login</Link>
               )}
