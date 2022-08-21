@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Login.css";
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import {
@@ -9,6 +9,7 @@ import {
   useAuthState,
 } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
+import { useSendPasswordResetEmail } from "react-firebase-hooks/auth";
 
 const Login = () => {
   const [user] = useAuthState(auth);
@@ -16,6 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [signInWithGoogle] = useSignInWithGoogle(auth);
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail] = useSendPasswordResetEmail(auth);
   let navigate = useNavigate();
   let location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -37,6 +39,12 @@ const Login = () => {
   const handleLogIn = (event) => {
     event.preventDefault();
     signInWithEmailAndPassword(email, password);
+  };
+
+  const handleResetPassword = async () => {
+    await sendPasswordResetEmail(email).then(() => {
+      alert("Password reset");
+    });
   };
 
   return (
@@ -62,6 +70,9 @@ const Login = () => {
             <div className="text-center transfer__login pt-1">
               <span>New to ema-john?</span>{" "}
               <Link to="/register">Create New Account</Link>
+              <Button variant="link" onClick={handleResetPassword}>
+                Reset Password
+              </Button>
             </div>
             <div className="d-flex justify-content-between align-items-center flex-row my-4">
               <div className="line"></div>
