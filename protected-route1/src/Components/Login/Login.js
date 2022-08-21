@@ -3,8 +3,10 @@ import "./Login.css";
 import { Container, Button } from "react-bootstrap";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { VscGithub } from "react-icons/vsc";
 import {
   useSignInWithGoogle,
+  useSignInWithGithub,
   useSignInWithEmailAndPassword,
   useAuthState,
 } from "react-firebase-hooks/auth";
@@ -16,6 +18,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [signInWithGoogle] = useSignInWithGoogle(auth);
+  const [signInWithGithub] = useSignInWithGithub(auth);
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
   const [sendPasswordResetEmail] = useSendPasswordResetEmail(auth);
   let navigate = useNavigate();
@@ -24,6 +27,9 @@ const Login = () => {
 
   const handleGoogleSignIn = () => {
     signInWithGoogle();
+  };
+  const handleGithubSignIn = () => {
+    signInWithGithub();
   };
   // handle google login
 
@@ -74,10 +80,10 @@ const Login = () => {
             <div className="text-center transfer__login pt-1">
               <span>New to ema-john?</span>{" "}
               <Link to="/register">Create New Account</Link>
-              <Button variant="link" onClick={handleResetPassword}>
-                Reset Password
-              </Button>
             </div>
+            <Button variant="link" onClick={handleResetPassword}>
+              Reset Password
+            </Button>
             <div className="d-flex justify-content-between align-items-center flex-row my-4">
               <div className="line"></div>
               <div className="text-secondary fw-bold">OR</div>
@@ -87,6 +93,10 @@ const Login = () => {
           <button className="google__btn" onClick={handleGoogleSignIn}>
             <FcGoogle className="fs-3" />
             <span> Continue With Google</span>
+          </button>
+          <button className="google__btn mt-3" onClick={handleGithubSignIn}>
+            <VscGithub className="fs-3" />
+            <span> Continue With Github</span>
           </button>
         </div>
       </Container>
